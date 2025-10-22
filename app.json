@@ -1,0 +1,68 @@
+{
+  "name": "TorontoDating",
+  "displayName": "Toronto Dating",
+  "version": "1.0.0",
+  "description": "The premier dating app for Toronto residents, featuring TTC integration, neighborhood matching, and local venue discovery.",
+  "author": "Faraz Shahsavan",
+  "homepage": "https://github.com/Faraz9877/TorontoDating",
+  "keywords": [
+    "dating",
+    "toronto",
+    "ttc",
+    "neighborhoods",
+    "local",
+    "canadian",
+    "mobile",
+    "react-native"
+  ],
+  "expo": {
+    "name": "Toronto Dating",
+    "slug": "toronto-dating",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "automatic",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.torontodating.app",
+      "buildNumber": "1",
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "Toronto Dating uses your location to find matches in your neighborhood and suggest nearby venues.",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "Toronto Dating uses your location to find matches in your neighborhood and suggest nearby venues.",
+        "NSCameraUsageDescription": "Toronto Dating needs camera access to let you take profile photos.",
+        "NSPhotoLibraryUsageDescription": "Toronto Dating needs photo library access to let you select profile photos."
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#FFFFFF"
+      },
+      "package": "com.torontodating.app",
+      "versionCode": 1,
+      "permissions": [
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION",
+        "CAMERA",
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE"
+      ]
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "expo-location",
+      "expo-camera",
+      "expo-image-picker"
+    ]
+  }
+}
