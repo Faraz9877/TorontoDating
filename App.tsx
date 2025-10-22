@@ -1,109 +1,187 @@
 import React from 'react';
-import {
-  SafeAreaView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  View,
-  useColorScheme,
-} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { StatusBar, Text, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
-// Import screens (will be created in subsequent commits)
+// Import screens
 import WelcomeScreen from './src/screens/WelcomeScreen';
 import AuthScreen from './src/screens/AuthScreen';
 import HomeScreen from './src/screens/HomeScreen';
+import ChatScreen from './src/screens/ChatScreen';
+import MatchesScreen from './src/screens/MatchesScreen';
+import ProfileScreen from './src/screens/ProfileScreen';
 
 // Navigation types
 export type RootStackParamList = {
   Welcome: undefined;
   Auth: undefined;
-  Home: undefined;
+  MainTabs: undefined;
+  Chat: {
+    matchId: string;
+    matchName: string;
+    matchPhoto?: string;
+  };
   Profile: undefined;
-  Chat: undefined;
+};
+
+export type MainTabParamList = {
   Discover: undefined;
-  Settings: undefined;
+  Matches: undefined;
+  Profile: undefined;
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
+const Tab = createBottomTabNavigator<MainTabParamList>();
 
-const App: React.FC = () => {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? '#1a1a1a' : '#ffffff',
-    flex: 1,
-  };
-
+// Custom Tab Bar Icon Component
+const TabIcon = ({ focused, icon }: { focused: boolean; icon: string }) => {
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <SafeAreaView style={backgroundStyle}>
-        <StatusBar
-          barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-          backgroundColor={backgroundStyle.backgroundColor}
-        />
-        <NavigationContainer>
-          <Stack.Navigator
-            initialRouteName="Welcome"
-            screenOptions={{
-              headerStyle: {
-                backgroundColor: isDarkMode ? '#2d2d2d' : '#ffffff',
-                elevation: 0,
-                shadowOpacity: 0,
-              },
-              headerTintColor: isDarkMode ? '#ffffff' : '#000000',
-              headerTitleStyle: {
-                fontWeight: 'bold',
-                fontSize: 18,
-              },
-              cardStyle: {
-                backgroundColor: isDarkMode ? '#1a1a1a' : '#ffffff',
-              },
-            }}
-          >
-            <Stack.Screen
-              name="Welcome"
-              component={WelcomeScreen}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="Auth"
-              component={AuthScreen}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="Home"
-              component={HomeScreen}
-              options={{ headerShown: false }}
-            />
-          </Stack.Navigator>
-        </NavigationContainer>
-      </SafeAreaView>
-    </GestureHandlerRootView>
+    <View style={{
+      alignItems: 'center',
+      justifyContent: 'center',
+      width: 24,
+      height: 24,
+    }}>
+      <Text style={{
+        fontSize: 20,
+        color: focused ? '#ff6b6b' : '#666',
+      }}>
+        {icon}
+      </Text>
+    </View>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#f5f5f5',
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#333',
-    marginBottom: 20,
-  },
-  subtitle: {
-    fontSize: 16,
-    color: '#666',
-    textAlign: 'center',
-    paddingHorizontal: 20,
-  },
-});
+// Main Tab Navigator
+const MainTabs = () => {
+  return (
+    <Tab.Navigator
+      screenOptions={{
+        headerShown: false,
+        tabBarStyle: {
+          backgroundColor: '#111',
+          borderTopColor: '#333',
+          borderTopWidth: 1,
+          height: 90,
+          paddingBottom: 20,
+          paddingTop: 10,
+        },
+        tabBarActiveTintColor: '#ff6b6b',
+        tabBarInactiveTintColor: '#666',
+        tabBarLabelStyle: {
+          fontSize: 12,
+          fontWeight: '600',
+          marginTop: 4,
+        },
+      }}
+    >
+      <Tab.Screen
+        name="Discover"
+        component={HomeScreen}
+        options={{
+          tabBarIcon: ({ focused }) => (
+            <TabIcon focused={focused} icon="🍁" />
+          ),
+          tabBarLabel: 'Discover',
+        }}
+      />
+      <Tab.Screen
+        name="Matches"
+        component={MatchesScreen}
+        options={{
+          tabBarIcon: ({ focused }) => (
+            <TabIcon focused={focused} icon="💬" />
+          ),
+          tabBarLabel: 'Matches',
+        }}
+      />
+      <Tab.Screen
+        name="Profile"
+        component={ProfileScreen}
+        options={{
+          tabBarIcon: ({ focused }) => (
+            <TabIcon focused={focused} icon="👤" />
+          ),
+          tabBarLabel: 'Profile',
+        }}
+      />
+    </Tab.Navigator>
+  );
+};
+
+// Main App Component
+const App: React.FC = () => {
+  return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <StatusBar
+        barStyle="light-content"
+        backgroundColor="#000"
+        translucent={false}
+      />
+      <NavigationContainer
+        theme={{
+          dark: true,
+          colors: {
+            primary: '#ff6b6b',
+            background: '#000',
+            card: '#111',
+            text: '#fff',
+            border: '#333',
+            notification: '#16537e',
+          },
+        }}
+      >
+        <Stack.Navigator
+          initialRouteName="Welcome"
+          screenOptions={{
+            headerShown: false,
+            gestureEnabled: true,
+            cardStyle: { backgroundColor: '#000' },
+          }}
+        >
+          <Stack.Screen
+            name="Welcome"
+            component={WelcomeScreen}
+            options={{
+              animationTypeForReplace: 'push',
+            }}
+          />
+          <Stack.Screen
+            name="Auth"
+            component={AuthScreen}
+            options={{
+              animationTypeForReplace: 'push',
+            }}
+          />
+          <Stack.Screen
+            name="MainTabs"
+            component={MainTabs}
+            options={{
+              animationTypeForReplace: 'push',
+            }}
+          />
+          <Stack.Screen
+            name="Chat"
+            component={ChatScreen}
+            options={{
+              presentation: 'modal',
+              animationTypeForReplace: 'push',
+            }}
+          />
+          <Stack.Screen
+            name="Profile"
+            component={ProfileScreen}
+            options={{
+              presentation: 'modal',
+              animationTypeForReplace: 'push',
+            }}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </GestureHandlerRootView>
+  );
+};
 
 export default App;
