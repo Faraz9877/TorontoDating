@@ -64,6 +64,7 @@ All commands assume you have Metro running in one terminal and platform builds i
    ```bash
    npm run android
    ```
+   If the native `android/` directory has not been generated yet, the command will exit early with setup instructions so you can scaffold the required React Native shell before building.
    Requirements:
    - Android emulator running, or a USB device with debugging enabled.
    - `ANDROID_HOME`/SDK tools available in your shell.
