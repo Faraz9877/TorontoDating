@@ -4,7 +4,7 @@
   "description": "A specialized dating app for Toronto residents with TTC integration, neighborhood matching, and local venue features",
   "main": "index.js",
   "scripts": {
-    "android": "react-native run-android",
+    "android": "node scripts/run-android.js",
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest",
